@@ -1,3 +1,4 @@
+import { NextPage } from 'next';
 import {
   Box,
   Card,
@@ -16,7 +17,6 @@ import {
 } from '@mui/material';
 
 import * as Yup from 'yup';
-
 import { Formik } from 'formik';
 
 const CardImg = styled(Card)(
@@ -65,7 +65,7 @@ const TopWrapper = styled(Box)(
   `
 );
 
-function login() {
+const Login: NextPage = (props): JSX.Element => {
   return (
     <MainContent>
       <TopWrapper>
@@ -242,6 +242,6 @@ function login() {
       </TopWrapper>
     </MainContent>
   );
-}
+};
 
-export default login;
+export default Login;
