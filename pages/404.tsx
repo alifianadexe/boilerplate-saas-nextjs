@@ -13,6 +13,7 @@ import {
 import Head from 'next/head';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import type { ReactElement } from 'react';
+import type { NextPage } from 'next';
 import BaseLayout from 'src/layouts/BaseLayout';
 
 const MainContent = styled(Box)(
@@ -47,7 +48,7 @@ const ButtonSearch = styled(Button)(
 `
 );
 
-function Status404() {
+const Status404: NextPage = (props): JSX.Element => {
   return (
     <>
       <Head>
@@ -102,7 +103,7 @@ function Status404() {
       </MainContent>
     </>
   );
-}
+};
 
 export default Status404;
 

@@ -1,4 +1,7 @@
-import { NextPage } from 'next';
+import { FormEventHandler, useState } from 'react';
+import type { ReactElement } from 'react';
+import type { NextPage } from 'next';
+import { signIn } from 'next-auth/react';
 import {
   Box,
   Card,
@@ -18,34 +21,6 @@ import {
 
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-
-const CardImg = styled(Card)(
-  ({ theme }) => `
-      width: 90px;
-      height: 80px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      background: ${theme.colors.alpha.white[100]};
-      margin: 0 ${theme.spacing(1)};
-      border: 1px solid ${theme.colors.alpha.black[10]};
-      transition: ${theme.transitions.create(['all'])};
-  
-      &:hover {
-        border-color: ${theme.colors.primary.main};
-      }
-  `
-);
-
-const BottomWrapper = styled(Box)(
-  ({ theme }) => `
-      padding: ${theme.spacing(3)};
-      display: flex;
-      align-items: center;
-      justify-content: center;
-  `
-);
 
 const MainContent = styled(Box)(
   () => `
@@ -118,8 +93,24 @@ const Login: NextPage = (props): JSX.Element => {
                   'You must agree to our terms and conditions'
                 )
               })}
-              onSubmit={function () {
-                console.log();
+              onSubmit={async (
+                values,
+                { setErrors, setStatus, setSubmitting }
+              ) => {
+                try {
+                  const res = await signIn('credentials', {
+                    email: values.email,
+                    password: values.password,
+                    redirect: false
+                  });
+
+                  setStatus({ success: true });
+                  setSubmitting(false);
+                } catch (err) {
+                  setStatus({ success: false });
+                  setErrors({ submit: err.message });
+                  setSubmitting(false);
+                }
               }}
             >
               {({
@@ -227,12 +218,6 @@ const Login: NextPage = (props): JSX.Element => {
               </Alert>
             </Tooltip>
           </Card>
-          <BottomWrapper>
-            <Tooltip arrow placement="top" title="Auth0">
-              <CardImg></CardImg>
-            </Tooltip>
-          </BottomWrapper>
-
           <Alert severity="error">
             {
               'Learn how to switch between auth methods by reading the section we’ve prepared in the documentation.'

@@ -1,9 +1,6 @@
-import {
-  Box,
-  styled
-} from '@mui/material';
+import { Box, styled } from '@mui/material';
 
-
+import { NextPage } from 'next';
 import SidebarLayout from '@/layouts/SidebarLayout';
 import DashboardCrypto from './dashboards/crypto';
 
@@ -16,13 +13,13 @@ const OverviewWrapper = styled(Box)(
 `
 );
 
-function Overview() {
+const Overview: NextPage = (props) => {
   return (
     <OverviewWrapper>
       <DashboardCrypto></DashboardCrypto>
     </OverviewWrapper>
   );
-}
+};
 
 Overview.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
 export default Overview;
