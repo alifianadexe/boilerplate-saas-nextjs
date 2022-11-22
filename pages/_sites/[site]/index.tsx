@@ -1,6 +1,9 @@
-import React from 'react';
+import { useEffect } from 'react';
 import NextLink from 'next/link';
 import { Button } from '@mui/material';
+import { useSession } from 'next-auth/react';
+import Router from 'next/router';
+import LoadingDots from '@/components/Loading/loading-dots';
 
 interface IndexProps {
   project: {
@@ -36,14 +39,24 @@ export const getStaticProps = async (context: { params: { site: string } }) => {
 };
 
 export default function Index({ project }: IndexProps) {
-  return (
-    <>
-      <h1>{project.data}</h1>
-      <NextLink href="/dashboard" passHref>
-        <Button className="active" disableRipple component="a">
-          Dashboard
-        </Button>
-      </NextLink>
-    </>
-  );
+  const { status, data } = useSession();
+
+  useEffect(() => {
+    if (status === 'unauthenticated') Router.replace('/login');
+  }, [status]);
+
+  if (status === 'authenticated') {
+    return (
+      <>
+        <h1>{project.data}</h1>
+        <NextLink href="/dashboard" passHref>
+          <Button className="active" disableRipple component="a">
+            Dashboard
+          </Button>
+        </NextLink>
+      </>
+    );
+  } else {
+    return <LoadingDots></LoadingDots>;
+  }
 }

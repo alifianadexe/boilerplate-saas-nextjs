@@ -31,9 +31,19 @@ const authOptions: NextAuthOptions = {
     })
   ],
   pages: {
-    signIn: '/auth/login'
-    // error: '/auth/error',
-    // signOut: '/auth/signout'
+    signIn: '/login',
+    error: '/login',
+    verifyRequest: '/login'
+  },
+  callbacks: {
+    session: ({ session, user }) => ({
+      ...session,
+      user: {
+        ...session.user,
+        id: user.id,
+        username: user.name
+      }
+    })
   }
 };
 
